@@ -3,6 +3,9 @@
 ## Overview
 Receives transaction webhooks, responds fast with `202`, processes transactions in the background with a 30s delay, and stores results. Idempotency is enforced via a unique `transaction_id`.
 
+## Live Deployment
+Cloud Run URL: `https://webhook-processor-820256992821.us-central1.run.app`
+
 ## Tech Choices
 - FastAPI + async SQLAlchemy
 - Alembic migrations
