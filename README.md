@@ -9,28 +9,17 @@ Receives transaction webhooks, responds fast with `202`, processes transactions 
 - SQLite local, Cloud SQL Postgres in production
 - In-process background task + recovery loop
 
-## Local Setup
+## One-Command Start (Docker Compose)
+```bash
+docker compose up --build
+```
+This starts Postgres, runs migrations, and launches the API on `http://localhost:8000`.
+
+## Local Setup (Optional)
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-```
-
-### Configure DB (optional)
-Default is SQLite: `sqlite+aiosqlite:///./app.db`.
-To override:
-```bash
-export DATABASE_URL="postgresql+asyncpg://user:pass@host:5432/dbname"
-```
-
-### Migrations
-```bash
-alembic upgrade head
-```
-
-### Run
-```bash
-uvicorn app.main:app --reload
 ```
 
 ### Quick API Tests
@@ -41,17 +30,6 @@ bash api_tests.sh
 ### Install package (for pytest/alembic imports)
 ```bash
 pip install -e .
-```
-
-## Cloud Run (Cloud SQL Postgres)
-1. Build and push image.
-2. Deploy:
-```bash
-gcloud run deploy webhook-processor \
-  --image gcr.io/PROJECT_ID/IMAGE:TAG \
-  --region REGION \
-  --add-cloudsql-instances INSTANCE_CONNECTION_NAME \
-  --set-env-vars DATABASE_URL="postgresql+asyncpg://USER:PASSWORD@/DB?host=/cloudsql/INSTANCE_CONNECTION_NAME"
 ```
 
 ## API

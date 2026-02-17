@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: webhook_db
+      POSTGRES_USER: webhook_user
+      POSTGRES_PASSWORD: webhook_password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U webhook_user -d webhook_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build: .
+    environment:
+      DATABASE_URL: postgresql+asyncpg://webhook_user:webhook_password@db:5432/webhook_db
+    ports:
+      - "8000:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db_data:

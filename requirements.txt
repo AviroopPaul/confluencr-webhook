@@ -9,5 +9,6 @@ pydantic>=2.0
 pydantic-settings
 python-dotenv
 httpx
+psycopg2-binary
 pytest
 pytest-asyncio
